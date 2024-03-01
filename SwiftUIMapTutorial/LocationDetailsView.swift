@@ -12,6 +12,7 @@ struct LocationDetailsView: View {
     @Binding var mapSelection: MKMapItem?
     @Binding var show: Bool
     @State private var lookAroundScene: MKLookAroundScene?
+    @Binding var getDirections: Bool
     
     var body: some View {
         VStack {
@@ -49,6 +50,34 @@ struct LocationDetailsView: View {
             } else {
                 ContentUnavailableView("No preview available", systemImage: "eye.slash")
             }
+            
+            HStack(spacing: 24) {
+                Button {
+                    if let mapSelection {
+                        mapSelection.openInMaps()
+                    }
+                } label: {
+                    Text("Open in Maps")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(width: 170, height: 48)
+                        .background(.green)
+                        .cornerRadius(12)
+                }
+                
+                Button {
+                    getDirections = true
+                    show = false
+                } label: {
+                    Text("Get Directions")
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .frame(width: 170, height: 48)
+                        .background(.blue)
+                        .cornerRadius(12)
+                }
+            }
+            .padding(.horizontal)
         }
         .onAppear {
             print("DEBUG: Did call onAppear")
@@ -74,5 +103,5 @@ extension LocationDetailsView {
 }
 
 #Preview {
-    LocationDetailsView(mapSelection: .constant(nil), show: .constant(false))
+    LocationDetailsView(mapSelection: .constant(nil), show: .constant(false), getDirections: .constant(false))
 }
