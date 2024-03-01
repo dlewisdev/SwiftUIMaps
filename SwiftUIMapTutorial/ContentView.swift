@@ -10,6 +10,8 @@ import MapKit
 
 struct ContentView: View {
     @State private var cameraPosition: MapCameraPosition = .region(.userRegion)
+    @State private var searchText = ""
+    
     var body: some View {
         Map(position: $cameraPosition) {
 //            Marker("My location", systemImage: "basketball", coordinate: .userLocation)
@@ -33,6 +35,17 @@ struct ContentView: View {
                         .foregroundStyle(.blue)
                 }
             }
+        }
+        .overlay(alignment: .top) {
+            TextField("Search for a location...", text: $searchText)
+                .font(.subheadline)
+                .padding(12)
+                .background(.white)
+                .padding()
+                .shadow(radius: 10)
+        }
+        .onSubmit(of: .text) {
+            print("Search for locations with query \(searchText)")
         }
         .mapControls {
             // Adds compass when rotating map
