@@ -11,13 +11,39 @@ import MapKit
 struct ContentView: View {
     @State private var cameraPosition: MapCameraPosition = .region(.userRegion)
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Map(position: $cameraPosition) {
+//            Marker("My location", systemImage: "basketball", coordinate: .userLocation)
+//                .tint(.blue)
+            
+            // Must request permission for UserAnnotation
+//            UserAnnotation()
+            
+            Annotation("My Location", coordinate: .userLocation) {
+                ZStack {
+                    Circle()
+                        .frame(width: 32, height: 32)
+                        .foregroundStyle(.blue.opacity(0.25))
+                    
+                    Circle()
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(.white)
+                    
+                    Circle()
+                        .frame(width: 12, height: 12)
+                        .foregroundStyle(.blue)
+                }
+            }
         }
-        .padding()
+        .mapControls {
+            // Adds compass when rotating map
+            MapCompass()
+            
+            // Adds toggle for 2D/3D map
+            MapPitchToggle()
+            
+            // Adds button to snap back to user location. Requires permissions.
+            MapUserLocationButton()
+        }
     }
 }
 
