@@ -15,6 +15,9 @@ struct ContentView: View {
     @State private var mapSelection: MKMapItem?
     @State private var showDetails = false
     @State private var getDirections = false
+    @State private var routeDisplaying = false
+    @State private var route: MKRoute?
+    @State private var routeDestination: MKMapItem?
     
     var body: some View {
         Map(position: $cameraPosition, selection: $mapSelection) {
@@ -44,6 +47,11 @@ struct ContentView: View {
                 let placemark = item.placemark
                 Marker(placemark.name ?? "", coordinate: placemark.coordinate)
             }
+            
+            if let route {
+                MapPolyline(route.polyline)
+                    .stroke(.blue, lineWidth: 6)
+            }
         }
         .overlay(alignment: .top) {
             TextField("Search for a location...", text: $searchText)
@@ -61,6 +69,11 @@ struct ContentView: View {
         .onChange(of: mapSelection) {
             // Only show details if an annotation is selected
             showDetails = mapSelection != nil
+        }
+        .onChange(of: getDirections) {
+            if getDirections {
+                fetchRoute()
+            }
         }
         .sheet(isPresented: $showDetails) {
             LocationDetailsView(mapSelection: $mapSelection,
@@ -86,12 +99,41 @@ struct ContentView: View {
 
 extension ContentView {
     func searchPlaces() async {
+        // Generate local search request
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchText
         request.region = .userRegion
         
         let results = try? await MKLocalSearch(request: request).start()
         self.results = results?.mapItems ?? []
+    }
+    
+    func fetchRoute() {
+        if let mapSelection {
+            // Generate directions request
+            let request = MKDirections.Request()
+            // Starting location
+            request.source = MKMapItem(placemark: .init(coordinate: .userLocation))
+            // Destination
+            request.destination = mapSelection
+            
+            Task {
+                let result = try? await MKDirections(request: request).calculate()
+                route = result?.routes.first
+                routeDestination = mapSelection
+                
+                withAnimation(.snappy) {
+                    routeDisplaying = true
+                    showDetails = false
+                    
+                    // Update camera position to be equal to the polyline's boundingMapRect
+                    // boundingMapRect is the smallest rectangle that completely encompasses the overlay
+                    if let rect = route?.polyline.boundingMapRect, routeDisplaying {
+                        cameraPosition = .rect(rect)
+                    }
+                }
+            }
+        }
     }
 }
 
