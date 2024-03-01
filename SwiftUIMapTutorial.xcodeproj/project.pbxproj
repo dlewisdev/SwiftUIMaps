@@ -11,6 +11,7 @@
 		71D803CD2B9230020098AEA7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D803CC2B9230020098AEA7 /* ContentView.swift */; };
 		71D803CF2B9230030098AEA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71D803CE2B9230030098AEA7 /* Assets.xcassets */; };
 		71D803D22B9230030098AEA7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71D803D12B9230030098AEA7 /* Preview Assets.xcassets */; };
+		71D803D92B92387B0098AEA7 /* LocationDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D803D82B92387B0098AEA7 /* LocationDetailsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		71D803CC2B9230020098AEA7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		71D803CE2B9230030098AEA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71D803D12B9230030098AEA7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		71D803D82B92387B0098AEA7 /* LocationDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				71D803CA2B9230020098AEA7 /* SwiftUIMapTutorialApp.swift */,
 				71D803CC2B9230020098AEA7 /* ContentView.swift */,
+				71D803D82B92387B0098AEA7 /* LocationDetailsView.swift */,
 				71D803CE2B9230030098AEA7 /* Assets.xcassets */,
 				71D803D02B9230030098AEA7 /* Preview Content */,
 			);
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71D803CD2B9230020098AEA7 /* ContentView.swift in Sources */,
+				71D803D92B92387B0098AEA7 /* LocationDetailsView.swift in Sources */,
 				71D803CB2B9230020098AEA7 /* SwiftUIMapTutorialApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
