@@ -36,6 +36,11 @@ struct ContentView: View {
                         .foregroundStyle(.blue)
                 }
             }
+            
+            ForEach(results, id: \.self) { item in
+                let placemark = item.placemark
+                Marker(placemark.name ?? "", coordinate: placemark.coordinate)
+            }
         }
         .overlay(alignment: .top) {
             TextField("Search for a location...", text: $searchText)
