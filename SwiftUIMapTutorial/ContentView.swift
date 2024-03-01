@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var results = [MKMapItem]()
     @State private var mapSelection: MKMapItem?
     @State private var showDetails = false
+    @State private var getDirections = false
     
     var body: some View {
         Map(position: $cameraPosition, selection: $mapSelection) {
@@ -62,7 +63,9 @@ struct ContentView: View {
             showDetails = mapSelection != nil
         }
         .sheet(isPresented: $showDetails) {
-            LocationDetailsView(mapSelection: $mapSelection, show: $showDetails)
+            LocationDetailsView(mapSelection: $mapSelection,
+                                show: $showDetails,
+                                getDirections: $getDirections)
                 .presentationDetents([.height(340)])
             // Allows you to still interact with the map even though the sheet is being presented
                 .presentationBackgroundInteraction(.enabled(upThrough: .height(340)))
