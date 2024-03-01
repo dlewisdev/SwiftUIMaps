@@ -12,9 +12,11 @@ struct ContentView: View {
     @State private var cameraPosition: MapCameraPosition = .region(.userRegion)
     @State private var searchText = ""
     @State private var results = [MKMapItem]()
+    @State private var mapSelection: MKMapItem?
+    @State private var showDetails = false
     
     var body: some View {
-        Map(position: $cameraPosition) {
+        Map(position: $cameraPosition, selection: $mapSelection) {
 //            Marker("My location", systemImage: "basketball", coordinate: .userLocation)
 //                .tint(.blue)
             
@@ -54,6 +56,17 @@ struct ContentView: View {
             Task {
                 await searchPlaces()
             }
+        }
+        .onChange(of: mapSelection) {
+            // Only show details if an annotation is selected
+            showDetails = mapSelection != nil
+        }
+        .sheet(isPresented: $showDetails) {
+            LocationDetailsView(mapSelection: $mapSelection, show: $showDetails)
+                .presentationDetents([.height(340)])
+            // Allows you to still interact with the map even though the sheet is being presented
+                .presentationBackgroundInteraction(.enabled(upThrough: .height(340)))
+                .presentationCornerRadius(12)
         }
         .mapControls {
             // Adds compass when rotating map
