@@ -11,6 +11,7 @@ import MapKit
 struct ContentView: View {
     @State private var cameraPosition: MapCameraPosition = .region(.userRegion)
     @State private var searchText = ""
+    @State private var results = [MKMapItem]()
     
     var body: some View {
         Map(position: $cameraPosition) {
@@ -45,7 +46,9 @@ struct ContentView: View {
                 .shadow(radius: 10)
         }
         .onSubmit(of: .text) {
-            print("Search for locations with query \(searchText)")
+            Task {
+                await searchPlaces()
+            }
         }
         .mapControls {
             // Adds compass when rotating map
@@ -57,6 +60,17 @@ struct ContentView: View {
             // Adds button to snap back to user location. Requires permissions.
             MapUserLocationButton()
         }
+    }
+}
+
+extension ContentView {
+    func searchPlaces() async {
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = searchText
+        request.region = .userRegion
+        
+        let results = try? await MKLocalSearch(request: request).start()
+        self.results = results?.mapItems ?? []
     }
 }
 
